@@ -1,16 +1,18 @@
+import java.util.*
+
 fun main() {
     val foodList = readInput("Day01_test")
-    val calorieList = mutableListOf<Int>()
+    val calorieSet = TreeSet<Int>()
     var elveCalories = 0
 
     for (food in foodList) {
         if (food.isNotEmpty()) {
             elveCalories += food.toInt()
         } else {
-            calorieList.add(elveCalories)
+            calorieSet.add(elveCalories)
             elveCalories = 0
         }
     }
 
-    println(calorieList.maxOrNull())
+    println(calorieSet.descendingSet().take(3).sum())
 }
