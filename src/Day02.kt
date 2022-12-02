@@ -3,14 +3,21 @@
 //paper B Y
 //scissors C Z
 val winningPairs = mapOf(
-    "X" to "C",
-    "Y" to "A",
-    "Z" to "B")
+    "A" to "Y",
+    "B" to "Z",
+    "C" to "X"
+)
+
+val loosingPairs = mapOf(
+    "A" to "Z",
+    "B" to "X",
+    "C" to "Y"
+)
 
 val drawPairs = mapOf(
-    "X" to "A",
-    "Y" to "B",
-    "Z" to "C"
+    "A" to "X",
+    "B" to "Y",
+    "C" to "Z"
 )
 
 fun main() {
@@ -22,11 +29,11 @@ fun main() {
 fun getRoundScore(round: String): Int {
     val roundPair = Pair(round.split(" ")[0], round.split(" ")[1])
 
-    return when (roundPair.first) {
-        drawPairs[roundPair.second] -> 3
-        winningPairs[roundPair.second] -> 6
-        else -> 0
-    } + getItemScore(roundPair.second)
+    return when (roundPair.second) {
+        "Y" -> drawPairs[roundPair.first]?.let { getItemScore(it) + 3 }
+        "Z" -> winningPairs[roundPair.first]?.let{ getItemScore(it) + 6}
+        else -> loosingPairs[roundPair.first]?.let{getItemScore(it)}
+    } ?: 0
 }
 
 fun getItemScore(item: String): Int {
