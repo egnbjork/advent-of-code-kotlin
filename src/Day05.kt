@@ -1,18 +1,15 @@
 fun main() {
     val gameInput = readInput("Day05_test")
 
-    val crates = normalizeCrates(gameInput)
-    val actions = normalizeActions(gameInput)
-
-    crates.forEach { println(it) }
-
-    val part1 = executePart1(crates, actions)
+    val part1 = executePart1(normalizeCrates(gameInput), normalizeActions(gameInput))
+    val part2 = executePart2(normalizeCrates(gameInput), normalizeActions(gameInput))
 
     printSolution(part1)
+    printSolution(part2)
 }
 
-fun normalizeCrates(input: List<String>): List<MutableList<Char>> {
-    var crateStackList = mutableListOf<MutableList<Char>>()
+fun normalizeCrates(input: List<String>): MutableList<MutableList<Char>> {
+    val crateStackList = mutableListOf<MutableList<Char>>()
 
     for(line in input) {
         if(line.contains("[0-9]".toRegex())) {
@@ -68,10 +65,19 @@ fun executePart1(crates: List<MutableList<Char>>, actions: List<Triple<Int, Int,
     return crates
 }
 
+fun executePart2(crates: MutableList<MutableList<Char>>, actions: List<Triple<Int, Int, Int>>): List<MutableList<Char>> {
+    for(action in actions) {
+        val crateToMove = crates[action.second].take(action.first)
+        crates[action.third].addAll(0, crateToMove)
+        crates[action.second] = crates[action.second].drop(action.first).toMutableList()
+    }
+
+    return crates
+}
 fun printSolution(crates: List<MutableList<Char>>) {
     var solution = ""
     for (crate in crates) {
         solution += crate.first()
     }
-    print(solution)
+    print("$solution \n")
 }
