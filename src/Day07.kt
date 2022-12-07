@@ -1,4 +1,6 @@
 const val CD = "$ cd "
+const val TOTAL_SPACE = 70000000
+const val UPDATE_SPACE = 30000000
 
 fun main() {
     val gameInput = readInput("Day07_test")
@@ -20,5 +22,18 @@ fun main() {
             }
         }
     }
+    println("part1")
     println(dirSizes.toList().sortedBy { (_, v) -> v }.filter{ (_, v) -> v < 100_000}.sumOf { (_, v) -> v })
+
+    val usedSpace = dirSizes.toList().map{ (_, v) -> v }.maxByOrNull { it } ?: 0
+    val neededSpace = usedSpace + UPDATE_SPACE - TOTAL_SPACE
+
+    println("part2")
+    if(neededSpace < UPDATE_SPACE) {
+        println(
+            dirSizes.toList()
+                .map { it.second }
+                .filter { it > neededSpace }.minOf { it }
+        )
+    }
 }
