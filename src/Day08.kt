@@ -1,61 +1,64 @@
+import java.util.*
+
 fun main() {
     val gameInput = readInput("Day08_test")
     val mapOfTrees = parseInput(gameInput)
-    var count = 0
+    var score = 0
+    val scoreSet = TreeSet<Int>()
 
     for ((i, row) in mapOfTrees.withIndex()) {
         for ((n, tree) in row.withIndex()) {
-            if(notABorderTree(i, n, mapOfTrees.size, row.size))  {
-                if (visibleFromUp(tree, i, n, mapOfTrees)) {
-                    count++
-                } else if (visibleFromRight(tree, i, n, mapOfTrees, row.size)) {
-                    count++
-                } else if (visibleFromBottom(tree, i, n, mapOfTrees)) {
-                    count++
-                } else if (visibleFromLeft(tree, i, n, mapOfTrees)) {
-                    count++
-                }
+            if (notABorderTree(i, n, mapOfTrees.size, row.size)) {
+                score += scoreLeft(tree, i, n, mapOfTrees) *
+                        scoreUp(tree, i, n, mapOfTrees) *
+                        scoreRight(tree, i, n, mapOfTrees, row.size) *
+                        scoreDown(tree, i, n, mapOfTrees)
             }
+            scoreSet.add(score)
+            score = 0
         }
+        }
+    println(scoreSet.last())
     }
 
-    println((mapOfTrees.size + mapOfTrees[0].size) * 2 - 4 + count)
-}
-
-fun visibleFromUp(tree: Int, i: Int, n: Int, mapOfTrees: List<List<Int>>): Boolean {
+fun scoreUp(tree: Int, i: Int, n: Int, mapOfTrees: List<List<Int>>): Int {
+    var score = 0
     repeat(i) {index ->
-        if(tree <= mapOfTrees[index][n]) {
-            return false
-        }
+        if(tree > mapOfTrees[i - index - 1][n]) {
+            score++
+        } else return ++score
     }
-    return true
+    return score
 }
 
-fun visibleFromRight(tree: Int, i: Int, n: Int, mapOfTrees: List<List<Int>>, rowSize: Int): Boolean {
+fun scoreRight(tree: Int, i: Int, n: Int, mapOfTrees: List<List<Int>>, rowSize: Int): Int {
+    var score = 0
     repeat(rowSize - n - 1) { index ->
-        if (tree <= mapOfTrees[i][rowSize - index - 1]) {
-            return false
-        }
+        if (tree > mapOfTrees[i][index + n + 1]) {
+            score++
+        } else return ++score
     }
-    return true
+    return score
 }
 
-fun visibleFromBottom(tree: Int, i: Int, n: Int, mapOfTrees: List<List<Int>>): Boolean {
+fun scoreDown(tree: Int, i: Int, n: Int, mapOfTrees: List<List<Int>>): Int {
+    var score = 0
     repeat(mapOfTrees.size - i - 1) { index ->
-        if (tree <= mapOfTrees[mapOfTrees.size - index - 1][n]) {
-            return false
-        }
+        if (tree > mapOfTrees[i + index + 1][n]) {
+            score++
+        } else return ++score
     }
-    return true
+    return score
 }
 
-fun visibleFromLeft(tree: Int, i: Int, n: Int, mapOfTrees: List<List<Int>>): Boolean {
+fun scoreLeft(tree: Int, i: Int, n: Int, mapOfTrees: List<List<Int>>): Int {
+    var score = 0
     repeat(n) { index ->
-        if (tree <= mapOfTrees[i][index]) {
-            return false
-        }
+        if (tree > mapOfTrees[i][n - index - 1]) {
+            score++
+        } else return ++score
     }
-    return true
+    return score
 }
 
 fun notABorderTree(i: Int, n: Int, mapSize: Int, rowSize: Int): Boolean {
@@ -76,3 +79,9 @@ fun parseInput(gameInput: List<String>): List<List<Int>> {
 
     return arr
 }
+
+//30373
+//25512
+//65332
+//33549
+//35390
