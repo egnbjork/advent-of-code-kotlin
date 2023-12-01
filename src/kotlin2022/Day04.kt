@@ -1,3 +1,7 @@
+package kotlin2022
+
+import readInput
+
 fun main() {
     val gameInput = readInput("Day04_test")
     val pairs = gameInput.map{it.split(",")}

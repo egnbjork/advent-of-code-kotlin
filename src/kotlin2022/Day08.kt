@@ -1,3 +1,6 @@
+package kotlin2022
+
+import readInput
 import java.util.*
 
 fun main() {

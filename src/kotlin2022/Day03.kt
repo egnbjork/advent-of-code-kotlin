@@ -1,8 +1,12 @@
+package kotlin2022
+
+import readInput
+
 fun main() {
     val gameInput = readInput("Day03_test")
 
     println("task1 ${gameInput.sumOf { getCharPriority(findCommonChar(it)) }}")
-    println("task2 ${gameInput.chunked(3).sumOf{ getCharPriority(findCommonChar(it))}}")
+    println("task2 ${gameInput.chunked(3).sumOf{ getCharPriority(findCommonChar(it)) }}")
 }
 
 fun findCommonChar(items: List<String>): Char {

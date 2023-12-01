@@ -1,3 +1,7 @@
+package kotlin2022
+
+import readInput
+
 const val DISTINCT_CHARS = 14
 
 fun main() {

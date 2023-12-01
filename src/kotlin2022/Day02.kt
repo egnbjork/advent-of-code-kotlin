@@ -1,3 +1,6 @@
+package kotlin2022
+
+import readInput
 
 //rock A X
 //paper B Y
@@ -32,7 +35,7 @@ fun getRoundScore(round: String): Int {
     return when (roundPair.second) {
         "Y" -> drawPairs[roundPair.first]?.let { getItemScore(it) + 3 }
         "Z" -> winningPairs[roundPair.first]?.let{ getItemScore(it) + 6}
-        else -> loosingPairs[roundPair.first]?.let{getItemScore(it)}
+        else -> loosingPairs[roundPair.first]?.let{ getItemScore(it) }
     } ?: 0
 }
 

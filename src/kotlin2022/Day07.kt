@@ -1,3 +1,7 @@
+package kotlin2022
+
+import readInput
+
 const val CD = "$ cd "
 const val TOTAL_SPACE = 70000000
 const val UPDATE_SPACE = 30000000
