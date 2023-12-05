@@ -1,38 +1,40 @@
 package kotlin2023
 
 import readInput
-
-val bag = mapOf(
-    "red" to 12,
-    "green" to 13,
-    "blue" to 14
-)
+import java.lang.IllegalStateException
 
 fun main() {
-    var count = 0
     val lines = readInput("kotlin2023/Day02_test")
-    lines.forEach {
-        val parsedLine = it.substring(it.indexOf(": ") + 1)
-        val gameSet = parsedLine.split(";")
-        if (valid(gameSet)) {
-            count += it.substring(5, it.indexOf(": ")).toInt()
-        }
-    }
-    println(count)
+    println(minimumSet(lines))
 }
 
-fun valid(gameSet: List<String>): Boolean {
-    println(gameSet)
-    for (game in gameSet) {
-        val set = game.split(", ")
-        for(cubes in set) {
+fun minimumSet(input: List<String>): Int {
+    return input.sumOf {
+        val parsedLine = it.substring(it.indexOf(": ") + 1)
+        val gameSet = parsedLine.trim().split("; ")
+        minimumCubes(gameSet)
+    }
+}
+
+fun minimumCubes(set: List<String>): Int {
+    var maxBlue = 0
+    var maxRed = 0
+    var maxGreen = 0
+
+    for (gameCubes in set) {
+        val parsedGameCubes =  gameCubes.split(", ")
+        for (cubes in parsedGameCubes) {
             val cube = cubes.trim().split(" ")
             val color = cube[1]
             val count = cube[0].toInt()
-            if((bag[color] ?: 0) < count) {
-                return false
+
+            when (color) {
+                "blue" -> if (count > maxBlue) maxBlue = count
+                "red" -> if (count > maxRed) maxRed = count
+                "green" -> if (count > maxGreen) maxGreen = count
+                else -> throw IllegalStateException("$color is not a proper color")
             }
         }
     }
-    return true
+    return maxBlue * maxRed * maxGreen
 }
